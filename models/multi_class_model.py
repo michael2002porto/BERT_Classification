@@ -106,7 +106,7 @@ class MultiClassModel(pl.LightningModule):
         self.log("loss", loss)
 
         outputs = {"loss": loss, "predictions": out, "labels": y}
-        self.training_step_outputs = outputs
+        self.training_step_outputs.append(outputs)
 
         return outputs
 
