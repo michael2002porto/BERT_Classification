@@ -159,12 +159,11 @@ class MultiClassModel(pl.LightningModule):
         predictions = []
 
         for output in self.training_step_outputs:
-            for out_lbl in output["labels"]:
-                print("\n")
-                print(out_lbl)
-                sys.exit()
+            for out_lbl in output["labels"].detach().cpu():
                 labels.append(out_lbl)
             for out_pred in output["predictions"].detach().cpu():
+                print("\n", out_pred)
+                sys.exit()
                 predictions.append(out_pred)
 
         labels = torch.stack(labels).int()
