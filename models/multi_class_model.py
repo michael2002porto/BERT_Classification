@@ -105,9 +105,10 @@ class MultiClassModel(pl.LightningModule):
         self.log("accuracy", report["accuracy"], prog_bar = True)
         self.log("loss", loss)
 
-        self.training_step_outputs.append(pred)
+        outputs = {"loss": loss, "predictions": out, "labels": y}        
+        self.training_step_outputs.append(outputs)
 
-        return {"loss": loss, "predictions": out, "labels": y}
+        return outputs
 
     def validation_step(self, batch, batch_idx):
         # Tidak transfer weight
