@@ -21,6 +21,9 @@ class MultiClassModel(pl.LightningModule):
         torch.manual_seed(1) # Untuk GPU
         random.seed(1) # Untuk CPU
 
+        # to make use of all the outputs from each training_step()
+        self.training_step_outputs = []
+
         # inisialisasi bert
         # sudah di training terhadap dataset tertentu oleh orang di wikipedia
         self.bert = BertModel.from_pretrained('indolem/indobert-base-uncased')
@@ -101,6 +104,8 @@ class MultiClassModel(pl.LightningModule):
 
         self.log("accuracy", report["accuracy"], prog_bar = True)
         self.log("loss", loss)
+
+        self.training_step_outputs.append(pred)
 
         return {"loss": loss, "predictions": out, "labels": y}
 
