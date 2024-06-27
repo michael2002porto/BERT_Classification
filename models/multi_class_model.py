@@ -147,12 +147,10 @@ class MultiClassModel(pl.LightningModule):
         return {"predictions": pred, "labels": true}
 
     def on_train_epoch_end(self):
-        outputs = torch.stack(self.training_step_outputs)
-
         labels = []
         predictions = []
 
-        for output in outputs:
+        for output in self.training_step_outputs:
             for out_lbl in output["labels"].detach().cpu():
                 labels.append(out_lbl)
             for out_pred in output["predictions"].detach().cpu():
