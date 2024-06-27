@@ -14,7 +14,7 @@ def collect_parser():
     parser.add_argument("--num_nodes", type=int, default=1)
 
     parser.add_argument("--max_length", type=int,  default=100)
-    parser.add_argument("--batch_size", type=int, default=10)
+    parser.add_argument("--batch_size", type=int, default=100)
     parser.add_argument("--max_epochs", type=int, default=10)
 
     parser.add_argument("--preprocessed_dir", type=str, default="data/preprocessed")
