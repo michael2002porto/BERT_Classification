@@ -22,7 +22,7 @@ class MultiClassModel(pl.LightningModule):
         random.seed(1) # Untuk CPU
 
         # to make use of all the outputs from each training_step()
-        self.training_step_outputs = {}
+        self.training_step_outputs = []
 
         # inisialisasi bert
         # sudah di training terhadap dataset tertentu oleh orang di wikipedia
@@ -105,9 +105,10 @@ class MultiClassModel(pl.LightningModule):
         self.log("accuracy", report["accuracy"], prog_bar = True)
         self.log("loss", loss)
 
-        self.training_step_outputs = {"loss": loss, "predictions": out, "labels": y}
+        outputs = {"loss": loss, "predictions": out, "labels": y}
+        self.training_step_outputs = outputs
 
-        return self.training_step_outputs
+        return outputs
 
     def validation_step(self, batch, batch_idx):
         # Tidak transfer weight
@@ -151,9 +152,6 @@ class MultiClassModel(pl.LightningModule):
         predictions = []
 
         for output in self.training_step_outputs:
-            print(output[0]["predictions"][0])
-            print(len(output))
-            break
             for out_lbl in output["labels"].detach().cpu():
                 labels.append(out_lbl)
             for out_pred in output["predictions"].detach().cpu():
@@ -168,6 +166,9 @@ class MultiClassModel(pl.LightningModule):
 
         # Print Akurasinya
         print("Overall Training Accuracy : ", acc)
+
+        # free memory
+        self.training_step_outputs.clear()
 
     def on_predict_epoch_end(self, outputs):
         labels = []
