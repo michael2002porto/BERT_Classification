@@ -163,6 +163,7 @@ class PreprocessorClass(pl.LightningDataModule):
 
         else:
             torch.save(tensor_dataset, f"{self.preprocessed_dir}/test.pt")
+            return tensor_dataset
 
 
         
@@ -183,7 +184,7 @@ class PreprocessorClass(pl.LightningDataModule):
         # Mengecek apakah data testnya sudah di preprocessed
         if not os.path.exists(f"{self.preprocessed_dir}/test.pt"):
             print("Create test dataset")
-            test_data = self.arrange_data(data = train, type = "test")
+            test_data = self.arrange_data(data = test, type = "test")
         else:
             print("Load Preprocessed test data")
             test_data = torch.load(f"{self.preprocessed_dir}/test.pt")
@@ -192,6 +193,7 @@ class PreprocessorClass(pl.LightningDataModule):
 
     def setup(self, stage = None):
         train_data, valid_data, test_data = self.preprocessor()
+        print(valid_data)
         # fit = training
         # predict = testing
         if stage == "fit":
@@ -207,7 +209,7 @@ class PreprocessorClass(pl.LightningDataModule):
             # Membagi process training dalam sekali proses
             batch_size = self.batch_size, 
             sampler = sampler,
-            num_workers = 1
+            num_workers = 4
         )
     
     def val_dataloader(self):
@@ -217,7 +219,7 @@ class PreprocessorClass(pl.LightningDataModule):
             # Membagi process training dalam sekali proses
             batch_size = self.batch_size, 
             sampler = sampler,
-            num_workers = 1
+            num_workers = 4
         )
     
     def predict_dataloader(self):
@@ -227,7 +229,7 @@ class PreprocessorClass(pl.LightningDataModule):
             # Membagi process training dalam sekali proses
             batch_size = self.batch_size, 
             sampler = sampler,
-            num_workers = 1
+            num_workers = 4
         )
 
 # if __name__ == '__main__':
