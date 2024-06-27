@@ -159,7 +159,7 @@ class MultiClassModel(pl.LightningModule):
         predictions = []
 
         for output in self.training_step_outputs:
-            for out_lbl in output["labels"].detach().cpu():
+            for out_lbl in output["labels"]:
                 print("\n")
                 print(out_lbl)
                 sys.exit()
