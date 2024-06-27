@@ -151,6 +151,9 @@ class MultiClassModel(pl.LightningModule):
         predictions = []
 
         for output in self.training_step_outputs:
+            print(output[0]["predictions"][0])
+            print(len(output))
+            break
             for out_lbl in output["labels"].detach().cpu():
                 labels.append(out_lbl)
             for out_pred in output["predictions"].detach().cpu():
@@ -171,9 +174,9 @@ class MultiClassModel(pl.LightningModule):
         predictions = []
 
         for output in outputs:
-            print(output[0]["predictions"][0])
-            print(len(output))
-            break
+            # print(output[0]["predictions"][0])
+            # print(len(output))
+            # break
             for out in output:
                 for out_lbl in out["labels"].detach().cpu():
                     labels.append(out_lbl)
