@@ -41,7 +41,7 @@ class MultiClassModel(pl.LightningModule):
         # menghitung loss function
         self.criterion = nn.BCEWithLogitsLoss()
 
-        self.accuracy = torchmetrics.Accuracy(task="multiclass")
+        self.accuracy = Accuracy(task="multiclass")
 
     # mengambil input dari bert, pre_classifier
     def forward(self, input_ids, attention_mask, token_type_ids):
