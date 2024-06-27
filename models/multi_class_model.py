@@ -8,7 +8,7 @@ import pytorch_lightning as pl
 from transformers import BertModel
 from sklearn.metrics import classification_report
 
-from torchmetrics import Accuracy
+from torchmetrics import Accuracy, F1Score, PrecisionRecallCurve
 
 class MultiClassModel(pl.LightningModule):
     def __init__(self,
@@ -32,6 +32,7 @@ class MultiClassModel(pl.LightningModule):
         self.dropout = nn.Dropout(dropout)
 
         # n_out = jumlah label
+        self.num_classes = n_out
         # jumlah label = 5
         # classifier untuk merubah menjadi label
         self.classifier = nn.Linear(768, n_out)
@@ -41,7 +42,12 @@ class MultiClassModel(pl.LightningModule):
         # menghitung loss function
         self.criterion = nn.BCEWithLogitsLoss()
 
-        self.accuracy = Accuracy(task = "multiclass", num_classes = 5)
+        self.accuracy = Accuracy(task="multiclass", num_classes = self.num_classes)
+        self.f1 = F1Score(task = "multiclass", 
+                          average = "micro", 
+                          multidim_average = "global",
+                          num_classes = self.num_classes)
+        self.precission_recall = PrecisionRecallCurve(task = "multiclass", num_classes = self.num_classes)
 
     # mengambil input dari bert, pre_classifier
     def forward(self, input_ids, attention_mask, token_type_ids):
@@ -149,7 +155,7 @@ class MultiClassModel(pl.LightningModule):
         predictions = torch.stack(predictions)
 
         # Hitung akurasi
-        accuracy = Accuracy(task = "multiclass", num_classes = 5)
+        accuracy = Accuracy(task = "multiclass", num_classes = self.num_classes)
         acc = accuracy(predictions, labels)
 
         # Print Akurasinya
@@ -172,6 +178,6 @@ class MultiClassModel(pl.LightningModule):
         labels = torch.stack(labels).int()
         predictions = torch.stack(predictions)
 
-        accuracy = Accuracy(task = "multiclass", num_classes = 5)
+        accuracy = Accuracy(task = "multiclass", num_classes = self.num_classes)
         acc = accuracy(predictions, labels)
         print("Overall Testing Accuracy : ", acc)
