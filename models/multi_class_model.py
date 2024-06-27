@@ -188,14 +188,14 @@ class MultiClassModel(pl.LightningModule):
     def on_predict_epoch_end(self):
         labels = []
         predictions = []
+        print(self.predict_step_outputs)
+        sys.exit()
 
         for output in self.predict_step_outputs:
             # print(output[0]["predictions"][0])
             # print(len(output))
             # break
             for out_lbl in output["labels"].detach().cpu():
-                print(out_lbl)
-                sys.exit()
                 labels.append(out_lbl)
             for out_pred in output["predictions"].detach().cpu():
                 predictions.append(out_pred)
