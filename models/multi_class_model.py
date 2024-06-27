@@ -22,7 +22,7 @@ class MultiClassModel(pl.LightningModule):
         random.seed(1) # Untuk CPU
 
         # to make use of all the outputs from each training_step()
-        self.training_step_outputs = []
+        self.training_step_outputs = {}
 
         # inisialisasi bert
         # sudah di training terhadap dataset tertentu oleh orang di wikipedia
@@ -105,10 +105,9 @@ class MultiClassModel(pl.LightningModule):
         self.log("accuracy", report["accuracy"], prog_bar = True)
         self.log("loss", loss)
 
-        outputs = {"loss": loss, "predictions": out, "labels": y}        
-        self.training_step_outputs.append(outputs)
+        self.training_step_outputs = {"loss": loss, "predictions": out, "labels": y}
 
-        return outputs
+        return self.training_step_outputs
 
     def validation_step(self, batch, batch_idx):
         # Tidak transfer weight
