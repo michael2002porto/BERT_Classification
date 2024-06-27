@@ -102,7 +102,8 @@ class MultiClassModel(pl.LightningModule):
         self.log("accuracy", report["accuracy"], prog_bar = True)
         self.log("loss", loss)
 
-        return {"loss": loss, "predictions": out, "labels": y}
+        # return {"loss": loss, "predictions": out, "labels": y}
+        return {"loss": loss, "outputs": out, "labels": y}
 
     def validation_step(self, batch, batch_idx):
         # Tidak transfer weight
@@ -139,7 +140,8 @@ class MultiClassModel(pl.LightningModule):
         true = y.argmax(1).cpu()
 
         # return [pred, true]
-        return {"predictions": pred, "labels": true}
+        # return {"predictions": pred, "labels": true}
+        return {"outputs": pred, "labels": true}
 
     def on_train_epoch_end(self, outputs):
         labels = []
