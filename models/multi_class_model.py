@@ -24,6 +24,9 @@ class MultiClassModel(pl.LightningModule):
         # to make use of all the outputs from each training_step()
         self.training_step_outputs = []
 
+        # to make use of all the outputs from each predict_step()
+        self.predict_step_outputs = []
+
         # inisialisasi bert
         # sudah di training terhadap dataset tertentu oleh orang di wikipedia
         self.bert = BertModel.from_pretrained('indolem/indobert-base-uncased')
@@ -144,8 +147,11 @@ class MultiClassModel(pl.LightningModule):
         pred = out.argmax(1).cpu()
         true = y.argmax(1).cpu()
 
+        outputs = {"predictions": pred, "labels": true}
+        self.predict_step_outputs.append(outputs)
+
         # return [pred, true]
-        return {"predictions": pred, "labels": true}
+        return outputs
 
     def on_train_epoch_end(self):
         labels = []
@@ -170,11 +176,11 @@ class MultiClassModel(pl.LightningModule):
         # free memory
         self.training_step_outputs.clear()
 
-    def on_predict_epoch_end(self, outputs):
+    def on_predict_epoch_end(self):
         labels = []
         predictions = []
 
-        for output in outputs:
+        for output in self.predict_step_outputs:
             # print(output[0]["predictions"][0])
             # print(len(output))
             # break
@@ -190,3 +196,6 @@ class MultiClassModel(pl.LightningModule):
         accuracy = Accuracy(task = "multiclass", num_classes = self.num_classes)
         acc = accuracy(predictions, labels)
         print("Overall Testing Accuracy : ", acc)
+
+        # free memory
+        self.predict_step_outputs.clear()
