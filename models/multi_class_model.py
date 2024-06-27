@@ -158,11 +158,11 @@ class MultiClassModel(pl.LightningModule):
         labels = []
         predictions = []
 
-        print(self.training_step_outputs)
-        sys.exit()
-
         for output in self.training_step_outputs:
             for out_lbl in output["labels"].detach().cpu():
+                print("\n")
+                print(out_lbl)
+                sys.exit()
                 labels.append(out_lbl)
             for out_pred in output["predictions"].detach().cpu():
                 predictions.append(out_pred)
@@ -175,7 +175,7 @@ class MultiClassModel(pl.LightningModule):
         acc = accuracy(predictions, labels)
 
         # Print Akurasinya
-        print("Overall Training Accuracy : ", acc)
+        print("\nOverall Training Accuracy : ", acc)
 
         # free memory
         self.training_step_outputs.clear()
@@ -199,7 +199,7 @@ class MultiClassModel(pl.LightningModule):
 
         accuracy = Accuracy(task = "multiclass", num_classes = self.num_classes)
         acc = accuracy(predictions, labels)
-        print("Overall Testing Accuracy : ", acc)
+        print("\nOverall Testing Accuracy : ", acc)
 
         # free memory
         self.predict_step_outputs.clear()
