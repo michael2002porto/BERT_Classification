@@ -164,20 +164,22 @@ class MultiClassModel(pl.LightningModule):
             for out_pred in output["predictions"].detach().cpu():
                 predictions.append(out_pred)
 
+        # argmax(dim=1) = convert one-hot encoded labels to class indices
         labels = torch.stack(labels).int().argmax(dim=1)
         predictions = torch.stack(predictions).argmax(dim=1)
 
-        print("\nlabels = ", labels)
-        print("\npredictions = ", predictions)
-        print("\num_classes = ", self.num_classes)
+        print("\n\n")
+        print("labels = ", labels)
+        print("predictions = ", predictions)
+        print("num_classes = ", self.num_classes)
 
         # Hitung akurasi
         accuracy = Accuracy(task = "multiclass", num_classes = self.num_classes)
         acc = accuracy(predictions, labels)
 
         # Print Akurasinya
-        print("\nOverall Training Accuracy : ", acc)
-        sys.exit()
+        print("Overall Training Accuracy : ", acc)
+        # sys.exit()
 
         # free memory
         self.training_step_outputs.clear()
@@ -196,12 +198,19 @@ class MultiClassModel(pl.LightningModule):
                 for out_pred in out["predictions"].detach().cpu():
                     predictions.append(out_pred)
 
-        labels = torch.stack(labels).int()
-        predictions = torch.stack(predictions)
+        # argmax(dim=1) = convert one-hot encoded labels to class indices
+        labels = torch.stack(labels).int().argmax(dim=1)
+        predictions = torch.stack(predictions).argmax(dim=1)
+
+        print("\n\n")
+        print("labels = ", labels)
+        print("predictions = ", predictions)
+        print("num_classes = ", self.num_classes)
 
         accuracy = Accuracy(task = "multiclass", num_classes = self.num_classes)
         acc = accuracy(predictions, labels)
-        print("\nOverall Testing Accuracy : ", acc)
+        print("Overall Testing Accuracy : ", acc)
+        # sys.exit()
 
         # free memory
         self.predict_step_outputs.clear()
