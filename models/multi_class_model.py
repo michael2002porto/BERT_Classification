@@ -41,7 +41,7 @@ class MultiClassModel(pl.LightningModule):
         # menghitung loss function
         self.criterion = nn.BCEWithLogitsLoss()
 
-        self.accuracy = Accuracy(task="multiclass")
+        self.accuracy = Accuracy(task = "multiclass", num_classes = 5)
 
     # mengambil input dari bert, pre_classifier
     def forward(self, input_ids, attention_mask, token_type_ids):
@@ -149,7 +149,7 @@ class MultiClassModel(pl.LightningModule):
         predictions = torch.stack(predictions)
 
         # Hitung akurasi
-        accuracy = Accuracy(task = "multiclass")
+        accuracy = Accuracy(task = "multiclass", num_classes = 5)
         acc = accuracy(predictions, labels)
 
         # Print Akurasinya
@@ -172,6 +172,6 @@ class MultiClassModel(pl.LightningModule):
         labels = torch.stack(labels).int()
         predictions = torch.stack(predictions)
 
-        accuracy = Accuracy(task = "multiclass")
+        accuracy = Accuracy(task = "multiclass", num_classes = 5)
         acc = accuracy(predictions, labels)
         print("Overall Testing Accuracy : ", acc)
