@@ -1,4 +1,5 @@
 import random
+import sys
 
 import torch
 import torch.nn as nn
@@ -156,6 +157,9 @@ class MultiClassModel(pl.LightningModule):
     def on_train_epoch_end(self):
         labels = []
         predictions = []
+
+        print(self.training_step_outputs)
+        sys.exit()
 
         for output in self.training_step_outputs:
             for out_lbl in output["labels"].detach().cpu():
