@@ -148,7 +148,7 @@ class MultiClassModel(pl.LightningModule):
         pred = out.argmax(1).cpu()
         true = y.argmax(1).cpu()
 
-        outputs = {"predictions": pred, "labels": true}
+        outputs = {"predictions": out, "labels": y}
         self.predict_step_outputs.append(outputs)
 
         # return [pred, true]
