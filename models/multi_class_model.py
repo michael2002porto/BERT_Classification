@@ -164,11 +164,12 @@ class MultiClassModel(pl.LightningModule):
             for out_pred in output["predictions"].detach().cpu():
                 predictions.append(out_pred)
 
-        labels = torch.stack(labels).int()
-        predictions = torch.stack(predictions)
+        labels = torch.stack(labels).int().argmax(dim=1)
+        predictions = torch.stack(predictions).argmax(dim=1)
 
         print("\nlabels = ", labels)
         print("\npredictions = ", predictions)
+        print("\num_classes = ", self.num_classes)
 
         # Hitung akurasi
         accuracy = Accuracy(task = "multiclass", num_classes = self.num_classes)
