@@ -169,7 +169,6 @@ class MultiClassModel(pl.LightningModule):
 
         print("\nlabels = ", labels)
         print("\npredictions = ", predictions)
-        sys.exit()
 
         # Hitung akurasi
         accuracy = Accuracy(task = "multiclass", num_classes = self.num_classes)
@@ -177,6 +176,7 @@ class MultiClassModel(pl.LightningModule):
 
         # Print Akurasinya
         print("\nOverall Training Accuracy : ", acc)
+        sys.exit()
 
         # free memory
         self.training_step_outputs.clear()
