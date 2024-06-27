@@ -91,7 +91,7 @@ class MultiClassModel(pl.LightningModule):
         # true = y.argmax(1).cpu()
 
         self.accuracy(out, y)
-        # report = classification_report(true, pred, output_dict = True, zero_division = 0)
+        report = classification_report(true, pred, output_dict = True, zero_division = 0)
 
         self.log("accuracy", report["accuracy"], prog_bar = True)
         self.log("loss", loss)
@@ -112,7 +112,7 @@ class MultiClassModel(pl.LightningModule):
         pred = out.argmax(1).cpu()
         true = y.argmax(1).cpu()
 
-        # report = classification_report(true, pred, output_dict = True, zero_division = 0)
+        report = classification_report(true, pred, output_dict = True, zero_division = 0)
         self.accuracy(out, y)
 
         self.log("accuracy", report["accuracy"], prog_bar = True)
