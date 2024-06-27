@@ -51,7 +51,7 @@ if __name__ == '__main__':
         #gpus = 1,
         #"bert_classification/checkpoints/class"
         accelerator = args.accelerator,
-        num_nodes = args.num_nodes,
+        # num_nodes = args.num_nodes,
         max_epochs = args.max_epochs,
         default_root_dir = "checkpoints/class",
         logger = logger
