@@ -194,8 +194,6 @@ class MultiClassModel(pl.LightningModule):
             # print(len(output))
             # break
             for out_lbl in output["labels"].detach().cpu():
-                print(out_lbl)
-                sys.exit()
                 labels.append(out_lbl)
             for out_pred in output["predictions"].detach().cpu():
                 predictions.append(out_pred)
