@@ -85,7 +85,7 @@ class MultiClassModel(pl.LightningModule):
         # Mengontrol (efisiensi) loss
         # Proses training lebih cepat
         # Tidak memakan memori berlebih
-        optimizer = torch.optim.Adam(self.parameters(), lr = self.lr)
+        optimizer = torch.optim.Adam(self.parameters(), lr = self.lr)   #untuk menjaga training model improve
         return optimizer
 
         #Learning rate semakin tinggi maka hasil itunya semakin besar
